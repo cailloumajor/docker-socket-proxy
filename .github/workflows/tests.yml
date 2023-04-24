@@ -40,7 +40,7 @@ jobs:
       - name: Lint Go Code
         uses: golangci/golangci-lint-action@v3
       - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v2.1.0
+        uses: hadolint/hadolint-action@v3.1.0
       - name: Build
         run: go build -v ./...
       - name: Check command usage in README.md
