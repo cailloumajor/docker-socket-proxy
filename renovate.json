@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
+  "semanticCommits": "enabled",
+  "packageRules": [
+    {
+      "matchPackageNames": ["golang", "tonistiigi/xx"],
+      "matchManagers": ["dockerfile"],
+      "semanticCommitType": "fix"
+    }
+  ]
+}
