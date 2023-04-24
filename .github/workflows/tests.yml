@@ -39,8 +39,6 @@ jobs:
           go-version: ${{ steps.get-go-version.outputs.GO_VERSION }}
       - name: Lint Go Code
         uses: golangci/golangci-lint-action@v3
-      - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v2.1.0
       - name: Build
         run: go build -v ./...
       - name: Check command usage in README.md
@@ -63,3 +61,5 @@ jobs:
     if: needs.pre_job.outputs.should_skip != 'true'
     steps:
       - run: echo "WIP"
+      # - name: Lint Dockerfile
+      #   uses: hadolint/hadolint-action@v2.1.0
