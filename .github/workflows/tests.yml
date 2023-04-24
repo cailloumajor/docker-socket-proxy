@@ -1,0 +1,63 @@
+name: Tests and code quality
+
+on:
+  push:
+    branches:
+      - main
+      - renovate/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pre_job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          concurrent_skipping: same_content
+          do_not_skip: '["pull_request", "release", "workflow_dispatch", "schedule"]'
+          skip_after_successful_duplicate: true
+  tests:
+    name: Code quality, unit tests and code coverage
+    runs-on: ubuntu-latest
+    needs: pre_job
+    if: needs.pre_job.outputs.should_skip != 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get Go version from Dockerfile
+        id: get-go-version
+        run: |
+          echo "GO_VERSION=$(grep -oP 'FROM .* golang:\K[\d.]+' Dockerfile)" \
+          >> $GITHUB_OUTPUT
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ steps.get-go-version.outputs.GO_VERSION }}
+      - name: Lint Go Code
+        uses: golangci/golangci-lint-action@v3
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v2.1.0
+      - name: Build
+        run: go build -v ./...
+      - name: Check command usage in README.md
+        # Thanks to https://unix.stackexchange.com/a/17405
+        run: diff
+          <(sed '1,/\$ docker-socket-proxy -help/d;/```/,$d' README.md)
+          <(go run main.go -help 2>&1)
+      - name: Test
+        run: go test -coverprofile cover.out -race -v ./...
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          flags: unittests
+  integration:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    needs: pre_job
+    if: needs.pre_job.outputs.should_skip != 'true'
