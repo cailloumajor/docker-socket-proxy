@@ -39,6 +39,18 @@ func (h *testSocketHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request)
 	}
 }
 
+func TestNewProxyError(t *testing.T) {
+	sd := t.TempDir()
+
+	sf := filepath.Join(sd, "test.sock")
+
+	_, err := NewProxy(sf, log.NewNopLogger())
+
+	if err == nil {
+		t.Error("NewProxy result: expected an error")
+	}
+}
+
 func TestProxyServeHTTP(t *testing.T) {
 	sd := t.TempDir()
 
@@ -57,7 +69,10 @@ func TestProxyServeHTTP(t *testing.T) {
 	ss.Start()
 	defer ss.Close()
 
-	p := NewProxy(sf, newTestLogger(t))
+	p, err := NewProxy(sf, newTestLogger(t))
+	if err != nil {
+		t.Fatalf("unexpected NewProxy error: %v", err)
+	}
 
 	req := httptest.NewRequest("GET", "/some/endpoint", nil)
 	w := httptest.NewRecorder()
