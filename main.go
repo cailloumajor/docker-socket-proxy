@@ -17,7 +17,7 @@ import (
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/oklog/run"
-	"github.com/peterbourgon/ff"
+	"github.com/peterbourgon/ff/v3"
 )
 
 const progName = "docker-socket-proxy"
