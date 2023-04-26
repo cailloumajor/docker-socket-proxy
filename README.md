@@ -40,6 +40,7 @@ Each filter object is composed as follows, the request must match all of the fil
 This service is provided as a Docker image, arguments can be provided by environment variables.
 
 ```ShellSession
+$ docker-socket-proxy -help
 USAGE
   docker-socket-proxy [options]
 
