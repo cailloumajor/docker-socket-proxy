@@ -9,6 +9,7 @@ COPY --from=xx / /
 WORKDIR /usr/src/app
 
 COPY go.mod go.sum *.go ./
+COPY cmd ./cmd
 COPY internal ./internal
 
 ARG TARGETPLATFORM
