@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1.3
+
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.2.1 AS xx
+
+FROM --platform=$BUILDPLATFORM golang:1.20.3-bullseye AS builder
+
+COPY --from=xx / /
+
+WORKDIR /usr/src/app
+
+COPY go.mod go.sum *.go ./
+COPY internal ./internal
+
+ARG TARGETPLATFORM
+ENV CGO_ENABLED=0
+RUN xx-go build -o bin/ -v ./... && \
+    xx-verify bin/*
+
+# hadolint ignore=DL3006
+FROM gcr.io/distroless/static-debian11
+
+COPY --from=builder /usr/src/app/bin/* /usr/local/bin/
+
+HEALTHCHECK CMD wget --spider http://127.0.0.1:2375/_ping || exit 1
+
+EXPOSE 2375
+
+USER nonroot
+CMD ["/usr/local/bin/docker-socket-proxy", "-api-listen", "0.0.0.0:2375"]
