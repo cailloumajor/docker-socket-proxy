@@ -21,7 +21,7 @@ FROM gcr.io/distroless/static-debian11
 
 COPY --from=builder /usr/src/app/bin/* /usr/local/bin/
 
-HEALTHCHECK CMD wget --spider http://127.0.0.1:2375/_ping || exit 1
+HEALTHCHECK CMD ["/usr/local/bin/healthcheck"]
 
 EXPOSE 2375
 

@@ -49,4 +49,6 @@ go.work
 # End of https://www.toptal.com/developers/gitignore/api/go,dotenv,visualstudiocode
 
 # Binaries
-docker-socket-proxy
+/bin/
+/docker-socket-proxy
+/healthcheck
