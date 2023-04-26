@@ -14,6 +14,7 @@ import (
 	"text/tabwriter"
 	"time"
 
+	"github.com/BurntSushi/toml"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/oklog/run"
@@ -50,18 +51,24 @@ func usageFor(fs *flag.FlagSet, out io.Writer) func() {
 	}
 }
 
+type config struct {
+	AllowFilters []*AllowFilter `toml:"allow_filters"`
+}
+
 func main() {
 	// Command-line arguments
 	var (
-		socketFile  string
 		apiListen   string
+		configFile  string
+		socketFile  string
 		verbose     bool
 		versionFlag bool
 	)
 
 	fs := flag.NewFlagSet(progName, flag.ExitOnError)
+	fs.StringVar(&apiListen, "api-listen", "127.0.0.1:2375", "Listen address")
+	fs.StringVar(&configFile, "config-file", "", "Path to the TOML configuration file")
 	fs.StringVar(&socketFile, "socket-file", "/var/run/docker.sock", "Path to the Docker socket file")
-	fs.StringVar(&apiListen, "listen", "127.0.0.1:2375", "Listen address")
 	fs.BoolVar(&verbose, "verbose", false, "Be more verbose")
 	fs.BoolVar(&versionFlag, "version", false, "Print version information and exit")
 	fs.Usage = usageFor(fs, os.Stderr)
@@ -88,31 +95,49 @@ func main() {
 		logger = level.NewFilter(logger, logLevel)
 	}
 
+	var cfg config
+	_, err := toml.DecodeFile(configFile, &cfg)
+	if err != nil {
+		level.Error(logger).Log("during", "decoding configuration", "err", err)
+		os.Exit(1)
+	}
+
 	var g run.Group
 
 	{
 		proxyLogger := log.With(logger, "component", "proxy")
-
 		proxy, err := NewProxy(socketFile, proxyLogger)
 		if err != nil {
 			level.Error(proxyLogger).Log("during", "initialization", "err", err)
 			os.Exit(1)
 		}
 
+		filterLogger := log.With(logger, "component", "request_filter")
+		ras := make(RequestAccepters, len(cfg.AllowFilters))
+		for i, f := range cfg.AllowFilters {
+			if err := f.Validate(); err != nil {
+				level.Error(filterLogger).Log("during", "filter validation", "err", err)
+				os.Exit(1)
+			}
+			ras[i] = f
+		}
+		fh := NewFilteringMiddleware(proxy, ras, filterLogger)
+
 		srv := http.Server{
 			Addr:    apiListen,
-			Handler: proxy,
+			Handler: fh,
 		}
 
+		apiLogger := log.With(logger, "component", "http_api")
 		g.Add(func() error {
-			defer level.Info(proxyLogger).Log("status", "shutting down")
-			level.Info(proxyLogger).Log("status", "start listening", "addr", apiListen)
+			defer level.Info(apiLogger).Log("status", "shutting down")
+			level.Info(apiLogger).Log("status", "start listening", "addr", apiListen)
 			return srv.ListenAndServe()
 		}, func(err error) {
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			defer cancel()
 			if err := srv.Shutdown(ctx); err != nil {
-				level.Error(proxyLogger).Log("during", "shutdown", "err", err)
+				level.Error(apiLogger).Log("during", "shutdown", "err", err)
 			}
 		})
 	}
@@ -123,9 +148,9 @@ func main() {
 
 	var se run.SignalError
 	if !errors.As(runErr, &se) {
-		level.Error(logger).Log("exit", "error")
+		level.Error(logger).Log("status", "program end", "err", runErr)
 		os.Exit(1)
 	}
 
-	level.Info(logger).Log("exit", runErr)
+	level.Info(logger).Log("status", "program end", "msg", runErr)
 }

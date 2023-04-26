@@ -2,6 +2,7 @@ package main_test
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"testing"
 
 	. "github.com/cailloumajor/docker-socket-proxy"
+	"github.com/cailloumajor/docker-socket-proxy/internal/testutils"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 )
@@ -34,9 +36,7 @@ type testSocketHandler []http.Request
 func (h *testSocketHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	*h = append(*h, *req.Clone(context.Background()))
 	rw.Header().Set("Test-Response", "socket-response")
-	if _, err := io.WriteString(rw, "socket response"); err != nil {
-		panic("error writing socket response")
-	}
+	fmt.Fprintln(rw, "socket response")
 }
 
 func TestNewProxyError(t *testing.T) {
@@ -46,8 +46,8 @@ func TestNewProxyError(t *testing.T) {
 
 	_, err := NewProxy(sf, log.NewNopLogger())
 
-	if err == nil {
-		t.Error("NewProxy result: expected an error")
+	if msg := testutils.AssertError(t, err, true); msg != "" {
+		t.Error(msg)
 	}
 }
 
@@ -88,7 +88,7 @@ func TestProxyServeHTTP(t *testing.T) {
 	if got, want := resp.Header.Get("Test-Response"), "socket-response"; got != want {
 		t.Errorf("response `Test-Response` header: want %q, got %q", want, got)
 	}
-	if got, want := string(body), "socket response"; got != want {
+	if got, want := string(body), "socket response\n"; got != want {
 		t.Errorf("response body: want %q, got %q", want, got)
 	}
 
