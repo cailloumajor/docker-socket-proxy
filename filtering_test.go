@@ -130,6 +130,11 @@ func TestRequestAcceptersAccept(t *testing.T) {
 		expectAccept bool
 	}{
 		{
+			name:         "EmptySlice",
+			filters:      RequestAccepters{},
+			expectAccept: false,
+		},
+		{
 			name:         "Rejected",
 			filters:      RequestAccepters{mockedAccepter(false), mockedAccepter(false)},
 			expectAccept: false,
