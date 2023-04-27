@@ -1,0 +1,7 @@
+[[allow_filters]]
+method = "GET"
+path = "/containers/**"
+
+[[allow_filters]]
+method = "GET"
+path = "/images/**"

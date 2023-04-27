@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+
+  docker-cli:
+    image: docker:23-cli
+    entrypoint: /bin/sh
+    environment:
+      - DOCKER_HOST=tcp://docker-socket-proxy:2375
+    volumes:
+      - ./docker-tests.sh:/usr/local/bin/docker-tests.sh:ro
+
+  docker-socket-proxy:
+    build: ..
+    command:
+      - /usr/local/bin/docker-socket-proxy
+      - -api-listen
+      - 0.0.0.0:2375
+      - -verbose
+    environment:
+      - CONFIG_FILE=/usr/local/etc/docker-socket-proxy.toml
+    group_add:
+      - ${DOCKER_SOCKET_GID}
+    volumes:
+      - ./config.toml:/usr/local/etc/docker-socket-proxy.toml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro

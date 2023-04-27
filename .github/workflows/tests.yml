@@ -63,3 +63,11 @@ jobs:
       - uses: actions/checkout@v3
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Run integration tests
+        run: ./smoke_test.sh --log-file ${{ runner.temp }}/integration_tests.log
+        working-directory: integration
+      - name: Print service logs
+        if: success() || failure()
+        run: cat ${{ runner.temp }}/integration_tests.log
