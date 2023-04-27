@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.0...v1.0.1) (2023-04-27)
+
+
+### Bug Fixes
+
+* **ci:** set jobs granular permissions ([921d1d7](https://github.com/cailloumajor/docker-socket-proxy/commit/921d1d7a55297c47a6de26bc154cd161620e62af))
+
 ## 1.0.0 (2023-04-27)
 
 
