@@ -3,7 +3,7 @@ version: "3"
 services:
 
   docker-cli:
-    image: docker:23-cli
+    image: docker:24-cli
     entrypoint: /bin/sh
     environment:
       - DOCKER_HOST=tcp://docker-socket-proxy:2375
