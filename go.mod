@@ -3,7 +3,7 @@ module github.com/cailloumajor/docker-socket-proxy
 go 1.20
 
 require (
-	github.com/BurntSushi/toml v1.2.1
+	github.com/BurntSushi/toml v1.3.1
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/go-kit/log v0.2.1
 	github.com/oklog/run v1.1.0
