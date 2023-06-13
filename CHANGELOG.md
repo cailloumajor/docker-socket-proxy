@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.3...v1.0.4) (2023-06-13)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/burntsushi/toml to v1.3.2 ([8cdfa0c](https://github.com/cailloumajor/docker-socket-proxy/commit/8cdfa0c415c52b4421275f59845096b6d50d7bd3))
+* **deps:** update module github.com/peterbourgon/ff/v3 to v3.3.2 ([4c42be1](https://github.com/cailloumajor/docker-socket-proxy/commit/4c42be11d546a3533dfd6a3a08bdb60a8777fbbc))
+
 ## [1.0.3](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.2...v1.0.3) (2023-06-07)
 
 
