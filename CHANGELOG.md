@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.4...v1.0.5) (2023-07-23)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/peterbourgon/ff/v3 to v3.4.0 ([21366cf](https://github.com/cailloumajor/docker-socket-proxy/commit/21366cf41eeeed7dfd9e2d00dbfe19166f3dfdc9))
+
 ## [1.0.4](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.3...v1.0.4) (2023-07-17)
 
 
