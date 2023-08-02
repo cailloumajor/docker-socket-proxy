@@ -2,7 +2,7 @@
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.2.1 AS xx
 
-FROM --platform=$BUILDPLATFORM golang:1.20.6-bullseye AS builder
+FROM --platform=$BUILDPLATFORM golang:1.20.7-bullseye AS builder
 
 COPY --from=xx / /
 
