@@ -1,4 +1,4 @@
-FROM golang:1.20.7-bullseye
+FROM golang:1.21.0-bullseye
 
 # [Optional] Uncomment the next line to use go get to install anything else you need
 # RUN go get -x <your-dependency-or-tool>
