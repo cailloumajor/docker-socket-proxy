@@ -64,7 +64,7 @@ jobs:
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Run integration tests
         run: ./smoke_test.sh --log-file ${{ runner.temp }}/integration_tests.log
         working-directory: integration
