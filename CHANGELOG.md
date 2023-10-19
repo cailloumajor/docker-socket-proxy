@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.11](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.10...v1.0.11) (2023-10-19)
+
+
+### Bug Fixes
+
+* **deps:** update tonistiigi/xx docker tag to v1.3.0 ([84c64e9](https://github.com/cailloumajor/docker-socket-proxy/commit/84c64e98efef896fb239ef00a4e9a7d407824540))
+
 ## [1.0.10](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.9...v1.0.10) (2023-10-11)
 
 
