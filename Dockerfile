@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.3
+# syntax=docker/dockerfile:1.6
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.3.0 AS xx
 
