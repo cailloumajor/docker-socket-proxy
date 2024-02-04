@@ -34,7 +34,8 @@
             },
             // Add the IDs of extensions you want installed when the container is created.
             "extensions": [
-                "editorconfig.editorconfig"
+                "editorconfig.editorconfig",
+                "tamasfe.even-better-toml"
             ]
         }
     },

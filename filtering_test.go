@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"testing"
 
-	. "github.com/cailloumajor/docker-socket-proxy"
+	dsp "github.com/cailloumajor/docker-socket-proxy"
 	"github.com/cailloumajor/docker-socket-proxy/internal/testutils"
 	"github.com/go-kit/log"
 )
@@ -22,17 +22,17 @@ func (m mockedAccepter) AcceptRequest(_ *http.Request) bool {
 func TestAllowFilterAccept(t *testing.T) {
 	cases := []struct {
 		name         string
-		filter       RequestAccepter
+		filter       dsp.RequestAccepter
 		expectAccept bool
 	}{
 		{
 			name:         "EmptyAllowFilter",
-			filter:       &AllowFilter{},
+			filter:       &dsp.AllowFilter{},
 			expectAccept: false,
 		},
 		{
 			name: "BadMethod",
-			filter: &AllowFilter{
+			filter: &dsp.AllowFilter{
 				Method: "POST",
 				Path:   "/some/**",
 			},
@@ -40,7 +40,7 @@ func TestAllowFilterAccept(t *testing.T) {
 		},
 		{
 			name: "EmptyMethod",
-			filter: &AllowFilter{
+			filter: &dsp.AllowFilter{
 				Method: "",
 				Path:   "/some/**",
 			},
@@ -48,7 +48,7 @@ func TestAllowFilterAccept(t *testing.T) {
 		},
 		{
 			name: "BadPath",
-			filter: &AllowFilter{
+			filter: &dsp.AllowFilter{
 				Method: "GET",
 				Path:   "/other/**",
 			},
@@ -56,7 +56,7 @@ func TestAllowFilterAccept(t *testing.T) {
 		},
 		{
 			name: "EmptyPathPattern",
-			filter: &AllowFilter{
+			filter: &dsp.AllowFilter{
 				Method: "GET",
 				Path:   "",
 			},
@@ -64,7 +64,7 @@ func TestAllowFilterAccept(t *testing.T) {
 		},
 		{
 			name: "Good",
-			filter: &AllowFilter{
+			filter: &dsp.AllowFilter{
 				Method: "GET",
 				Path:   "/some/**",
 			},
@@ -110,7 +110,7 @@ func TestAllowFilterValidate(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			f := &AllowFilter{
+			f := &dsp.AllowFilter{
 				Path: tc.path,
 			}
 
@@ -126,27 +126,27 @@ func TestAllowFilterValidate(t *testing.T) {
 func TestRequestAcceptersAccept(t *testing.T) {
 	cases := []struct {
 		name         string
-		filters      RequestAccepter
+		filters      dsp.RequestAccepter
 		expectAccept bool
 	}{
 		{
 			name:         "EmptySlice",
-			filters:      RequestAccepters{},
+			filters:      dsp.RequestAccepters{},
 			expectAccept: false,
 		},
 		{
 			name:         "Rejected",
-			filters:      RequestAccepters{mockedAccepter(false), mockedAccepter(false)},
+			filters:      dsp.RequestAccepters{mockedAccepter(false), mockedAccepter(false)},
 			expectAccept: false,
 		},
 		{
 			name:         "AcceptedFirst",
-			filters:      RequestAccepters{mockedAccepter(true), mockedAccepter(false)},
+			filters:      dsp.RequestAccepters{mockedAccepter(true), mockedAccepter(false)},
 			expectAccept: true,
 		},
 		{
 			name:         "AcceptedSecond",
-			filters:      RequestAccepters{mockedAccepter(false), mockedAccepter(true)},
+			filters:      dsp.RequestAccepters{mockedAccepter(false), mockedAccepter(true)},
 			expectAccept: true,
 		},
 	}
@@ -170,7 +170,7 @@ func TestFilteringMiddleware(t *testing.T) {
 	cases := []struct {
 		name         string
 		method       string
-		accepter     RequestAccepter
+		accepter     dsp.RequestAccepter
 		expectStatus int
 		expectBody   string
 	}{
@@ -199,7 +199,7 @@ func TestFilteringMiddleware(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			fw := NewFilteringMiddleware(wh, tc.accepter, log.NewNopLogger())
+			fw := dsp.NewFilteringMiddleware(wh, tc.accepter, log.NewNopLogger())
 
 			req := httptest.NewRequest(tc.method, "/", nil)
 			w := httptest.NewRecorder()

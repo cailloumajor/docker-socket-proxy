@@ -5,4 +5,4 @@ exclude-use-default = false
 enable = [ "revive" ]
 
 [linters-settings.errcheck]
-exclude-functions = "(github.com/go-kit/log.Logger).Log"
+exclude-functions = [ "(github.com/go-kit/log.Logger).Log" ]
