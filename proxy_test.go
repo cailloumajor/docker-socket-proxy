@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/cailloumajor/docker-socket-proxy"
+	dsp "github.com/cailloumajor/docker-socket-proxy"
 	"github.com/cailloumajor/docker-socket-proxy/internal/testutils"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -44,7 +44,7 @@ func TestNewProxyError(t *testing.T) {
 
 	sf := filepath.Join(sd, "test.sock")
 
-	_, err := NewProxy(sf, log.NewNopLogger())
+	_, err := dsp.NewProxy(sf, log.NewNopLogger())
 
 	if msg := testutils.AssertError(t, err, true); msg != "" {
 		t.Error(msg)
@@ -69,7 +69,7 @@ func TestProxyServeHTTP(t *testing.T) {
 	ss.Start()
 	defer ss.Close()
 
-	p, err := NewProxy(sf, newTestLogger(t))
+	p, err := dsp.NewProxy(sf, newTestLogger(t))
 	if err != nil {
 		t.Fatalf("unexpected NewProxy error: %v", err)
 	}
