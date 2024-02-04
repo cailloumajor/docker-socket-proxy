@@ -34,7 +34,7 @@ jobs:
           echo "GO_VERSION=$(grep -oP 'FROM .* golang:\K[\d.]+' Dockerfile)" \
           >> $GITHUB_OUTPUT
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ steps.get-go-version.outputs.GO_VERSION }}
       - name: Lint Go Code
