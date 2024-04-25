@@ -163,7 +163,7 @@ func TestRequestAcceptersAccept(t *testing.T) {
 }
 
 func TestFilteringMiddleware(t *testing.T) {
-	wh := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	wh := http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		fmt.Fprintln(w, "success")
 	})
 

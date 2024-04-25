@@ -133,7 +133,7 @@ func main() {
 			defer level.Info(apiLogger).Log("status", "shutting down")
 			level.Info(apiLogger).Log("status", "start listening", "addr", apiListen)
 			return srv.ListenAndServe()
-		}, func(err error) {
+		}, func(_ error) {
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			defer cancel()
 			if err := srv.Shutdown(ctx); err != nil {
