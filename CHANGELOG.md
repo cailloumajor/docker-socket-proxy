@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.14](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.13...v1.0.14) (2024-05-23)
+
+
+### Bug Fixes
+
+* **deps:** update golang docker tag to v1.22.3 ([77ac1ff](https://github.com/cailloumajor/docker-socket-proxy/commit/77ac1ff9921102d0e82d78c96c4a9b0e0bfbbd46))
+* **deps:** update module github.com/burntsushi/toml to v1.4.0 ([42e95bb](https://github.com/cailloumajor/docker-socket-proxy/commit/42e95bbd93623666c2dfa12f6c598db3bbb8cd89))
+
 ## [1.0.13](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.12...v1.0.13) (2024-04-25)
 
 
