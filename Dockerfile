@@ -2,7 +2,7 @@
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.4.0 AS xx
 
-FROM --platform=$BUILDPLATFORM golang:1.22.3-bullseye AS builder
+FROM --platform=$BUILDPLATFORM golang:1.22.6-bookworm AS builder
 
 COPY --from=xx / /
 
@@ -18,7 +18,7 @@ RUN xx-go build -o bin/ -v ./... && \
     xx-verify bin/*
 
 # hadolint ignore=DL3006
-FROM gcr.io/distroless/static-debian11
+FROM gcr.io/distroless/static-debian12
 
 COPY --from=builder /usr/src/app/bin/* /usr/local/bin/
 
