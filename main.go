@@ -6,7 +6,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -25,14 +24,14 @@ const progName = "docker-socket-proxy"
 
 var projectVersion = "dev"
 
-func usageFor(fs *flag.FlagSet, out io.Writer) func() {
+func usageFor(fs *flag.FlagSet) func() {
 	return func() {
-		fmt.Fprintln(out, "USAGE")
-		fmt.Fprintf(out, "  %s [options]\n", fs.Name())
-		fmt.Fprintln(out)
-		fmt.Fprintln(out, "OPTIONS")
+		fmt.Fprintln(os.Stderr, "USAGE")
+		fmt.Fprintf(os.Stderr, "  %s [options]\n", fs.Name())
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "OPTIONS")
 
-		tw := tabwriter.NewWriter(out, 0, 2, 2, ' ', 0)
+		tw := tabwriter.NewWriter(os.Stderr, 0, 2, 2, ' ', 0)
 		fmt.Fprintf(tw, "  Flag\tEnv Var\tDescription\n")
 		fs.VisitAll(func(f *flag.Flag) {
 			var envVar string
@@ -71,7 +70,7 @@ func main() {
 	fs.StringVar(&socketFile, "socket-file", "/var/run/docker.sock", "Path to the Docker socket file")
 	fs.BoolVar(&verbose, "verbose", false, "Be more verbose")
 	fs.BoolVar(&versionFlag, "version", false, "Print version information and exit")
-	fs.Usage = usageFor(fs, os.Stderr)
+	fs.Usage = usageFor(fs)
 
 	if err := ff.Parse(fs, os.Args[1:], ff.WithEnvVarNoPrefix()); err != nil {
 		fmt.Fprintf(os.Stderr, "error parsing flags: %v\n", err)
