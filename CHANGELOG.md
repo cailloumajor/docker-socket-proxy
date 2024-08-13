@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.15](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.14...v1.0.15) (2024-08-13)
+
+
+### Bug Fixes
+
+* **deps:** update golang docker tag to bookworm ([381e366](https://github.com/cailloumajor/docker-socket-proxy/commit/381e3663acc076c1e69487cc6e63257bf7838ce9))
+* **deps:** update golang docker tag to v1.22.6 ([6e6a1d8](https://github.com/cailloumajor/docker-socket-proxy/commit/6e6a1d8ffa585396de56ac002a8cdeffdb2a1d21))
+
 ## [1.0.14](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.13...v1.0.14) (2024-05-23)
 
 
