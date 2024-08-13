@@ -9,3 +9,5 @@ linters-settings:
   errcheck:
     exclude-functions:
       - (github.com/go-kit/log.Logger).Log
+      - fmt.Fprintf(*text/tabwriter.Writer)
+      - fmt.Fprintln(net/http.ResponseWriter)

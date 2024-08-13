@@ -78,7 +78,7 @@ func main() {
 	}
 
 	if versionFlag {
-		fmt.Fprintf(os.Stdout, "%s version %s\n", progName, projectVersion)
+		fmt.Printf("%s version %s\n", progName, projectVersion)
 		os.Exit(0)
 	}
 
