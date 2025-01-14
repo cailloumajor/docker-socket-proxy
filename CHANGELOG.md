@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.18](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.17...v1.0.18) (2025-01-14)
+
+
+### Bug Fixes
+
+* **deps:** update golang docker tag to v1.23.4 ([860c947](https://github.com/cailloumajor/docker-socket-proxy/commit/860c9474a3fd9637bdb4c64a524501da28c3d877))
+* **deps:** update golang docker tag to v1.23.4 ([d2a2790](https://github.com/cailloumajor/docker-socket-proxy/commit/d2a2790fc37f8eeea7f48d770162a3b823b52fda))
+* **deps:** update module github.com/bmatcuk/doublestar/v4 to v4.8.0 ([14a8fa7](https://github.com/cailloumajor/docker-socket-proxy/commit/14a8fa78cea7a70212b28d6c97c12877fced7cfa))
+* **deps:** update module github.com/bmatcuk/doublestar/v4 to v4.8.0 ([23e072a](https://github.com/cailloumajor/docker-socket-proxy/commit/23e072a4c4d5552bd9545aa1b1ea70c6279c4565))
+* **deps:** update tonistiigi/xx docker tag to v1.6.1 ([a517df3](https://github.com/cailloumajor/docker-socket-proxy/commit/a517df30aa44af70bf29b724f7aa01c9fa47aa06))
+* **deps:** update tonistiigi/xx docker tag to v1.6.1 ([0e24970](https://github.com/cailloumajor/docker-socket-proxy/commit/0e249701e9ef1862a1cc79f54cf415691254261d))
+
 ## [1.0.17](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.16...v1.0.17) (2024-11-07)
 
 
