@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.19](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.18...v1.0.19) (2025-02-14)
+
+
+### Bug Fixes
+
+* **deps:** update golang docker tag to v1.23.5 ([5e3398e](https://github.com/cailloumajor/docker-socket-proxy/commit/5e3398e8f95991bddfaad6e986f042e5ec22cdae))
+* **deps:** update golang docker tag to v1.23.5 ([253b696](https://github.com/cailloumajor/docker-socket-proxy/commit/253b696c96eb1823865a7dc5431e68c185301408))
+* **deps:** update golang docker tag to v1.23.6 ([2c1b189](https://github.com/cailloumajor/docker-socket-proxy/commit/2c1b189adeaa2536465c71d08202633e985455d3))
+* **deps:** update golang docker tag to v1.23.6 ([ab6946c](https://github.com/cailloumajor/docker-socket-proxy/commit/ab6946c027320f06c65821626e53683463d30d7f))
+* **deps:** update golang docker tag to v1.24.0 ([690cfa5](https://github.com/cailloumajor/docker-socket-proxy/commit/690cfa584b8fe849a3ebd018364264b1a243bc78))
+* **deps:** update golang docker tag to v1.24.0 ([6d56bb0](https://github.com/cailloumajor/docker-socket-proxy/commit/6d56bb0116247a9274d3d2d05300dbb5f1fe80d9))
+* **deps:** update module github.com/bmatcuk/doublestar/v4 to v4.8.1 ([800fa5e](https://github.com/cailloumajor/docker-socket-proxy/commit/800fa5e02deb3b43f9c39f724d44ba50c71bbbb2))
+* **deps:** update module github.com/bmatcuk/doublestar/v4 to v4.8.1 ([f81fcf1](https://github.com/cailloumajor/docker-socket-proxy/commit/f81fcf1d014abb29188345404b99726589c00ef2))
+* **deps:** use standard library structured logging ([d3d8bd3](https://github.com/cailloumajor/docker-socket-proxy/commit/d3d8bd343c178308919ef407ff34d91e08fc3f73))
+* **deps:** use standard library structured logging ([b4dab6f](https://github.com/cailloumajor/docker-socket-proxy/commit/b4dab6f303c5d5b41d0c89e7fd89c4e602f4159d))
+* set project version in binary when building Docker image ([5873b25](https://github.com/cailloumajor/docker-socket-proxy/commit/5873b25634d66db8485d29606e2f04483c223ed8))
+* set project version in binary when building Docker image ([d3ec41a](https://github.com/cailloumajor/docker-socket-proxy/commit/d3ec41a62778722e246d5cc72145626a69f2046f))
+
 ## [1.0.18](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.17...v1.0.18) (2025-01-14)
 
 
