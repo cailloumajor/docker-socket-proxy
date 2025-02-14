@@ -6,6 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -14,8 +15,6 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
-	"github.com/go-kit/log"
-	"github.com/go-kit/log/level"
 	"github.com/oklog/run"
 	"github.com/peterbourgon/ff/v3"
 )
@@ -82,40 +81,44 @@ func main() {
 		os.Exit(0)
 	}
 
-	var logger log.Logger
+	var logger *slog.Logger
 	{
-		logger = log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr))
-		var logLevel level.Option
-		if verbose {
-			logLevel = level.AllowDebug()
-		} else {
-			logLevel = level.AllowInfo()
+		opts := &slog.HandlerOptions{
+			ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+				if a.Key == slog.TimeKey && len(groups) == 0 {
+					return slog.Attr{}
+				}
+				return a
+			},
 		}
-		logger = level.NewFilter(logger, logLevel)
+		if verbose {
+			opts.Level = slog.LevelDebug
+		}
+		logger = slog.New(slog.NewTextHandler(os.Stderr, opts))
 	}
 
 	var cfg config
 	_, err := toml.DecodeFile(configFile, &cfg)
 	if err != nil {
-		level.Error(logger).Log("during", "decoding configuration", "err", err)
+		logger.Error("parsing configuration failed", "err", err)
 		os.Exit(1)
 	}
 
 	var g run.Group
 
 	{
-		proxyLogger := log.With(logger, "component", "proxy")
+		proxyLogger := logger.With("component", "proxy")
 		proxy, err := NewProxy(socketFile, proxyLogger)
 		if err != nil {
-			level.Error(proxyLogger).Log("during", "initialization", "err", err)
+			proxyLogger.Error("initialization failed", "err", err)
 			os.Exit(1)
 		}
 
-		filterLogger := log.With(logger, "component", "request_filter")
+		filterLogger := logger.With("component", "request_filter")
 		ras := make(RequestAccepters, len(cfg.AllowFilters))
 		for i, f := range cfg.AllowFilters {
 			if err := f.Validate(); err != nil {
-				level.Error(filterLogger).Log("during", "filter validation", "err", err)
+				filterLogger.Error("validation failed", "err", err)
 				os.Exit(1)
 			}
 			ras[i] = f
@@ -127,16 +130,16 @@ func main() {
 			Handler: fh,
 		}
 
-		apiLogger := log.With(logger, "component", "http_api")
+		apiLogger := logger.With("component", "http_api")
 		g.Add(func() error {
-			defer level.Info(apiLogger).Log("status", "shutting down")
-			level.Info(apiLogger).Log("status", "start listening", "addr", apiListen)
+			defer apiLogger.Info("shutting down")
+			apiLogger.Info("start listening", "addr", apiListen)
 			return srv.ListenAndServe()
 		}, func(_ error) {
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			defer cancel()
 			if err := srv.Shutdown(ctx); err != nil {
-				level.Error(apiLogger).Log("during", "shutdown", "err", err)
+				apiLogger.Error("shutdown failed", "err", err)
 			}
 		})
 	}
@@ -147,9 +150,9 @@ func main() {
 
 	var se run.SignalError
 	if !errors.As(runErr, &se) {
-		level.Error(logger).Log("status", "program end", "err", runErr)
+		logger.Error("running failed", "err", runErr)
 		os.Exit(1)
 	}
 
-	level.Info(logger).Log("status", "program end", "msg", runErr)
+	logger.Info("terminating", "msg", runErr)
 }

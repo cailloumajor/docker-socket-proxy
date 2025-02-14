@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log/slog"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -13,8 +14,6 @@ import (
 
 	dsp "github.com/cailloumajor/docker-socket-proxy"
 	"github.com/cailloumajor/docker-socket-proxy/internal/testutils"
-	"github.com/go-kit/log"
-	"github.com/go-kit/log/level"
 )
 
 type logWriter struct {
@@ -27,8 +26,8 @@ func (w *logWriter) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
-func newTestLogger(tb testing.TB) log.Logger {
-	return level.NewFilter(log.NewLogfmtLogger(&logWriter{tb}), level.AllowError())
+func newTestLogger(tb testing.TB) *slog.Logger {
+	return slog.New(slog.NewTextHandler(&logWriter{tb}, &slog.HandlerOptions{Level: slog.LevelError}))
 }
 
 type testSocketHandler []http.Request
@@ -44,7 +43,7 @@ func TestNewProxyError(t *testing.T) {
 
 	sf := filepath.Join(sd, "test.sock")
 
-	_, err := dsp.NewProxy(sf, log.NewNopLogger())
+	_, err := dsp.NewProxy(sf, slog.New(slog.DiscardHandler))
 
 	if msg := testutils.AssertError(t, err, true); msg != "" {
 		t.Error(msg)

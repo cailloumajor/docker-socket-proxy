@@ -3,6 +3,7 @@ package main_test
 import (
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -10,7 +11,6 @@ import (
 
 	dsp "github.com/cailloumajor/docker-socket-proxy"
 	"github.com/cailloumajor/docker-socket-proxy/internal/testutils"
-	"github.com/go-kit/log"
 )
 
 type mockedAccepter bool
@@ -199,7 +199,7 @@ func TestFilteringMiddleware(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			fw := dsp.NewFilteringMiddleware(wh, tc.accepter, log.NewNopLogger())
+			fw := dsp.NewFilteringMiddleware(wh, tc.accepter, slog.New(slog.DiscardHandler))
 
 			req := httptest.NewRequest(tc.method, "/", nil)
 			w := httptest.NewRecorder()

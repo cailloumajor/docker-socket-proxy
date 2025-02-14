@@ -3,14 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	stdlog "log"
+	"log/slog"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"time"
-
-	"github.com/go-kit/log"
 )
 
 func checkSocket(d *net.Dialer, sf string) error {
@@ -37,7 +35,7 @@ func rewrite(pr *httputil.ProxyRequest) {
 }
 
 // NewProxy creates a new Docker socket proxy on the given socket file.
-func NewProxy(sf string, l log.Logger) (*httputil.ReverseProxy, error) {
+func NewProxy(sf string, l *slog.Logger) (*httputil.ReverseProxy, error) {
 	d := &net.Dialer{
 		Timeout: 1 * time.Second,
 	}
@@ -50,18 +48,13 @@ func NewProxy(sf string, l log.Logger) (*httputil.ReverseProxy, error) {
 		return d.DialContext(ctx, "unix", sf)
 	}
 
-	const goReverseProxyPrefix = "go_reverse_proxy"
-	rl := log.NewStdlibAdapter(
-		log.With(l, "component", goReverseProxyPrefix),
-		log.Prefix(goReverseProxyPrefix, false),
-	)
-	sl := stdlog.New(rl, goReverseProxyPrefix, stdlog.LstdFlags)
+	errorLog := slog.NewLogLogger(l.Handler(), slog.LevelError)
 
 	return &httputil.ReverseProxy{
 		Rewrite: rewrite,
 		Transport: &http.Transport{
 			DialContext: dc,
 		},
-		ErrorLog: sl,
+		ErrorLog: errorLog,
 	}, nil
 }
