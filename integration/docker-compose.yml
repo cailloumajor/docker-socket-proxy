@@ -9,7 +9,10 @@ services:
       - ./docker-tests.sh:/usr/local/bin/docker-tests.sh:ro
 
   docker-socket-proxy:
-    build: ..
+    build:
+      context: ..
+      args:
+        - PROJECT_VERSION=integration-tests
     command:
       - /usr/local/bin/docker-socket-proxy
       - -api-listen

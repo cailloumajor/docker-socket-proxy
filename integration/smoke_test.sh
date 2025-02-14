@@ -49,6 +49,13 @@ export DOCKER_SOCKET_GID
 # Start the service
 docker compose up -d --build --quiet-pull docker-socket-proxy
 
+# Check that version was set at build.
+got=$(docker compose exec docker-socket-proxy /usr/local/bin/docker-socket-proxy -version)
+expected="docker-socket-proxy version integration-tests"
+if [ "$got" != "$expected" ]; then
+    die "unexpected version information, expected \"$expected\", got \"$got\""
+fi
+
 # Wait for the service to be ready
 max_attempts=5
 wait_success=

@@ -12,9 +12,12 @@ COPY go.mod go.sum *.go ./
 COPY cmd ./cmd
 COPY internal ./internal
 
+ARG PROJECT_VERSION
+RUN test -n "${PROJECT_VERSION}"
+
 ARG TARGETPLATFORM
 ENV CGO_ENABLED=0
-RUN xx-go build -o bin/ -v ./... && \
+RUN xx-go build -ldflags "-X main.projectVersion=${PROJECT_VERSION}" -o bin/ -v ./... && \
     xx-verify bin/*
 
 # hadolint ignore=DL3006
