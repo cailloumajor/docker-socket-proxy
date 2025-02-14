@@ -57,11 +57,11 @@ for i in $(seq 1 $max_attempts); do
         wait_success="true"
         break
     fi
-    echo "Waiting for OPC-UA proxy to be healthy: try #$i failed" >&2
+    echo "Waiting for docker-socket-proxy to be healthy: try #$i failed" >&2
     [[ $i != "$max_attempts" ]] && sleep 5
 done
 if [ "$wait_success" != "true" ]; then
-    die "failure waiting for OPC-UA proxy to be healthy"
+    die "failure waiting for docker-socket-proxy to be healthy"
 fi
 
 echo "$me: run docker CLI tests"
