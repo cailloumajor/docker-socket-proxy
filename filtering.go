@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"regexp"
 	"strings"
 
 	"github.com/bmatcuk/doublestar/v4"
-	"github.com/go-kit/log"
-	"github.com/go-kit/log/level"
 )
 
 var apiPrefixRe = regexp.MustCompile(`^/v[0-9.]+`)
@@ -67,26 +66,31 @@ func (ras RequestAccepters) AcceptRequest(r *http.Request) (accepted bool) {
 type FilteringMiddleware struct {
 	wrapped  http.Handler
 	accepter RequestAccepter
-	logger   log.Logger
+	logger   *slog.Logger
 }
 
 // NewFilteringMiddleware creates a filtering middleware.
-func NewFilteringMiddleware(h http.Handler, a RequestAccepter, l log.Logger) *FilteringMiddleware {
+func NewFilteringMiddleware(h http.Handler, a RequestAccepter, l *slog.Logger) *FilteringMiddleware {
 	return &FilteringMiddleware{h, a, l}
-}
-
-func logRequest(l log.Logger, r *http.Request, status string) {
-	l.Log("request_status", status, "method", r.Method, "path", r.URL.Path, "from", r.RemoteAddr)
 }
 
 // ServeHTTP implements http.Handler.
 func (f *FilteringMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	logRequest(level.Debug(f.logger), r, "received")
+	logRequest := func(level slog.Level, msg string) {
+		rg := slog.Group("request",
+			slog.String("method", r.Method),
+			slog.String("path", r.URL.Path),
+			slog.String("from", r.RemoteAddr),
+		)
+		f.logger.LogAttrs(r.Context(), level, msg, rg)
+	}
+
+	logRequest(slog.LevelDebug, "request received")
 
 	if r.Method == http.MethodHead || f.accepter.AcceptRequest(r) {
 		f.wrapped.ServeHTTP(w, r)
 	} else {
-		logRequest(level.Warn(f.logger), r, "rejected")
+		logRequest(slog.LevelWarn, "request rejected")
 		http.Error(w, progName+": request rejected", http.StatusForbidden)
 	}
 }
