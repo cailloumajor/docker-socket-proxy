@@ -35,7 +35,7 @@ func usageFor(fs *flag.FlagSet) func() {
 		fs.VisitAll(func(f *flag.Flag) {
 			var envVar string
 			if f.Name != "verbose" && f.Name != "version" {
-				envVar = strings.Replace(strings.ToUpper(f.Name), "-", "_", -1)
+				envVar = strings.ReplaceAll(strings.ToUpper(f.Name), "-", "_")
 			}
 			var defValue string
 			if f.DefValue != "" {
