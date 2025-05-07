@@ -2,7 +2,7 @@
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.6.1 AS xx
 
-FROM --platform=$BUILDPLATFORM golang:1.24.2-bookworm AS builder
+FROM --platform=$BUILDPLATFORM golang:1.24.3-bookworm AS builder
 
 COPY --from=xx / /
 
