@@ -148,8 +148,7 @@ func main() {
 
 	runErr := g.Run()
 
-	var se run.SignalError
-	if !errors.As(runErr, &se) {
+	if !errors.Is(runErr, run.ErrSignal) {
 		logger.Error("running failed", "err", runErr)
 		os.Exit(1)
 	}
