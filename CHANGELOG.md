@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.22](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.21...v1.0.22) (2025-07-13)
+
+
+### Bug Fixes
+
+* **deps:** update golang docker tag to v1.24.3 ([#103](https://github.com/cailloumajor/docker-socket-proxy/issues/103)) ([230177f](https://github.com/cailloumajor/docker-socket-proxy/commit/230177f2ff694ff65400c217019b6614e421530a))
+* **deps:** update golang docker tag to v1.24.4 ([#106](https://github.com/cailloumajor/docker-socket-proxy/issues/106)) ([352f96b](https://github.com/cailloumajor/docker-socket-proxy/commit/352f96ba4f8b6205211dda873291e07d38f6a526))
+* **deps:** update golang docker tag to v1.24.5 ([#109](https://github.com/cailloumajor/docker-socket-proxy/issues/109)) ([67ed94e](https://github.com/cailloumajor/docker-socket-proxy/commit/67ed94e7c1f0d0a64a377707a409985cf0498d3c))
+* **deps:** update module github.com/bmatcuk/doublestar/v4 to v4.9.0 ([#110](https://github.com/cailloumajor/docker-socket-proxy/issues/110)) ([d8ad0c9](https://github.com/cailloumajor/docker-socket-proxy/commit/d8ad0c9e26558f69aedebfacca45675515b0ffe7))
+* **deps:** update module github.com/oklog/run to v1.2.0 ([#107](https://github.com/cailloumajor/docker-socket-proxy/issues/107)) ([922cc87](https://github.com/cailloumajor/docker-socket-proxy/commit/922cc876f5aa3b99577d1872a2af26f50d76c094))
+* use simpler flow construction ([#111](https://github.com/cailloumajor/docker-socket-proxy/issues/111)) ([5da4b96](https://github.com/cailloumajor/docker-socket-proxy/commit/5da4b96ac2fe952c58a9a97a9973fd8c6afb2be7))
+
 ## [1.0.21](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.20...v1.0.21) (2025-05-05)
 
 
