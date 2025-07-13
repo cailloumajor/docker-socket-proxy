@@ -51,15 +51,14 @@ func (a *AllowFilter) AcceptRequest(r *http.Request) bool {
 type RequestAccepters []RequestAccepter
 
 // AcceptRequest implements RequestAccepter.
-func (ras RequestAccepters) AcceptRequest(r *http.Request) (accepted bool) {
+func (ras RequestAccepters) AcceptRequest(r *http.Request) bool {
 	for _, ra := range ras {
 		if ra.AcceptRequest(r) {
-			accepted = true
-			break
+			return true
 		}
 	}
 
-	return
+	return false
 }
 
 // FilteringMiddleware wraps a handler and filters requests against rules.
