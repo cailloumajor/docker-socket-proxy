@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.23](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.22...v1.0.23) (2025-07-27)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/bmatcuk/doublestar/v4 to v4.9.1 ([#112](https://github.com/cailloumajor/docker-socket-proxy/issues/112)) ([2b0ef0c](https://github.com/cailloumajor/docker-socket-proxy/commit/2b0ef0caef00f0d6fed702e6fbb2bed79b66464a))
+
 ## [1.0.22](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.21...v1.0.22) (2025-07-13)
 
 
