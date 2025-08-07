@@ -1,4 +1,4 @@
-FROM golang:1.24.5-bookworm
+FROM golang:1.24.6-bookworm
 
 # [Optional] Uncomment the next line to use go get to install anything else you need
 # RUN go get -x <your-dependency-or-tool>
