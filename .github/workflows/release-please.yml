@@ -1,0 +1,17 @@
+name: Releases management
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - id: release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          # Token permissions: read access to metadata, read and write access to
+          # actions, code and pull requests.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}

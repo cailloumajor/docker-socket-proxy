@@ -1,4 +1,4 @@
-name: Automated delivery
+name: Publish versions
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - "v*"
 
 jobs:
-  docker-release:
-    name: Build and release Docker image
+  publish:
+    name: Build and push Docker image
     runs-on: ubuntu-latest
     permissions:
       packages: write
