@@ -2,7 +2,7 @@
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.8.0 AS xx
 
-FROM --platform=$BUILDPLATFORM golang:1.25.3-trixie AS builder
+FROM --platform=$BUILDPLATFORM golang:1.25.4-trixie AS builder
 
 COPY --from=xx / /
 
