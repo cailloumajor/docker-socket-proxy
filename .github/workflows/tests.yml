@@ -38,7 +38,7 @@ jobs:
         with:
           go-version: ${{ steps.get-go-version.outputs.GO_VERSION }}
       - name: Lint Go Code
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
           args: --verbose
       - name: Build
