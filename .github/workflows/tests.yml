@@ -27,7 +27,7 @@ jobs:
     needs: pre_job
     if: needs.pre_job.outputs.should_skip != 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Get Go version from Dockerfile
         id: get-go-version
         run: |
@@ -62,7 +62,7 @@ jobs:
     needs: pre_job
     if: needs.pre_job.outputs.should_skip != 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.3.0
       - name: Set up Docker Buildx
