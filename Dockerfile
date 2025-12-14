@@ -21,7 +21,7 @@ RUN xx-go build -ldflags "-X main.projectVersion=${PROJECT_VERSION}" -o bin/ -v 
     xx-verify bin/*
 
 # hadolint ignore=DL3006
-FROM gcr.io/distroless/static-debian12
+FROM gcr.io/distroless/static-debian13
 
 COPY --from=builder /usr/src/app/bin/* /usr/local/bin/
 
