@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.27](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.26...v1.0.27) (2025-12-18)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/burntsushi/toml to v1.6.0 ([0225c67](https://github.com/cailloumajor/docker-socket-proxy/commit/0225c67034eda7c73c560a13353b28542da6af72))
+
 ## [1.0.26](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.25...v1.0.26) (2025-12-14)
 
 
