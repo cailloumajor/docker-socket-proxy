@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.27](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.26...v1.0.27) (2026-01-16)
+
+
+### Bug Fixes
+
+* **deps:** update golang docker tag to v1.25.6 ([74a60df](https://github.com/cailloumajor/docker-socket-proxy/commit/74a60df85451e99ef223087b2bec1ad345c96bab))
+* **deps:** update module github.com/bmatcuk/doublestar/v4 to v4.9.2 ([f45b5c5](https://github.com/cailloumajor/docker-socket-proxy/commit/f45b5c5dcae125d7a01aa29add23749fc2503090))
+* **deps:** update module github.com/burntsushi/toml to v1.6.0 ([0225c67](https://github.com/cailloumajor/docker-socket-proxy/commit/0225c67034eda7c73c560a13353b28542da6af72))
+
 ## [1.0.26](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.25...v1.0.26) (2025-12-14)
 
 
