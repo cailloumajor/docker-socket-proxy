@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.29](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.28...v1.0.29) (2026-03-07)
+
+
+### Bug Fixes
+
+* **deps:** update golang docker tag to v1.26.1 ([aec13f9](https://github.com/cailloumajor/docker-socket-proxy/commit/aec13f98208c7201ffc18db7f80a519cd7c9ef40))
+
 ## [1.0.28](https://github.com/cailloumajor/docker-socket-proxy/compare/v1.0.27...v1.0.28) (2026-02-11)
 
 
