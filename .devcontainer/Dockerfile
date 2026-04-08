@@ -1,4 +1,4 @@
-FROM golang:1.26.1-trixie
+FROM golang:1.26.2-trixie
 
 # [Optional] Uncomment the next line to use go get to install anything else you need
 # RUN go get -x <your-dependency-or-tool>
