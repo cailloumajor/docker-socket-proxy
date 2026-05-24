@@ -1,4 +1,4 @@
-name: Tests and code quality
+name: Continuous integration
 
 on:
   push:
@@ -11,7 +11,11 @@ on:
 
 jobs:
   pre_job:
+    permissions:
+      actions: write
+      contents: read
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
@@ -21,35 +25,39 @@ jobs:
           concurrent_skipping: same_content
           do_not_skip: '["pull_request", "release", "workflow_dispatch", "schedule"]'
           skip_after_successful_duplicate: true
-  tests:
-    name: Code quality, unit tests and code coverage
+  ci:
+    name: Tests and code quality
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: pre_job
     if: needs.pre_job.outputs.should_skip != 'true'
     steps:
       - uses: actions/checkout@v6
-      - name: Get Go version from Dockerfile
-        id: get-go-version
-        run: |
-          echo "GO_VERSION=$(grep -oP 'FROM .* golang:\K[\d.]+' Dockerfile)" \
-          >> $GITHUB_OUTPUT
-      - name: Set up Go
-        uses: actions/setup-go@v6
         with:
-          go-version: ${{ steps.get-go-version.outputs.GO_VERSION }}
-      - name: Lint Go Code
-        uses: golangci/golangci-lint-action@v9
+          persist-credentials: false
+      - name: Setup Go cache
+        uses: actions/cache@v5
         with:
-          args: --verbose
-      - name: Build
-        run: go build -v ./...
-      - name: Check command usage in README.md
-        # Thanks to https://unix.stackexchange.com/a/17405
-        run: diff
-          <(sed '1,/\$ docker-socket-proxy -help/d;/```/,$d' README.md)
-          <(go run . -help 2>&1)
-      - name: Test
-        run: go test -coverprofile cover.out -race -v ./...
+          path: |
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Run CI task
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          HK_FAIL_FAST: true
+          HK_STATE_DIR: ${{ runner.temp }}/hk
+        run: mise run ci
+      - name: Upload lint task output
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: failure()
+        with:
+          name: lint-task-results
+          path: ${{ runner.temp }}/hk/output.log
+          archive: false
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
@@ -63,8 +71,6 @@ jobs:
     if: needs.pre_job.outputs.should_skip != 'true'
     steps:
       - uses: actions/checkout@v6
-      - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v3.3.0
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Run integration tests

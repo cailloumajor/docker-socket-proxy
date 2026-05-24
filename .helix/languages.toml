@@ -1,0 +1,7 @@
+[[language]]
+name = "go"
+auto-format = true
+formatter.command = "gofumpt"
+
+[language-server.gopls.config]
+gofumpt = true

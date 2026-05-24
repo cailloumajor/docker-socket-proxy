@@ -1,0 +1,46 @@
+amends "package://github.com/jdx/hk/releases/download/v1.45.0/hk@1.45.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.45.0/hk@1.45.0#/Builtins.pkl"
+
+local linters = new Mapping<String, Step> {
+  ["actionlint"] = Builtins.actionlint
+  ["betterleaks"] = Builtins.betterleaks
+  ["editorconfig-checker"] = Builtins.editorconfig_checker
+  ["ghalint"] = Builtins.ghalint_workflow
+  ["gofumpt"] = (Builtins.go_fumpt) {
+    check = "gofumpt -d {{files}}"
+  }
+  ["goimports"] = Builtins.go_imports
+  ["golangci-lint"] = Builtins.golangci_lint
+  ["go-mod-tidy"] = Builtins.gomod_tidy
+  ["hadolint"] = Builtins.hadolint
+  ["mise"] = Builtins.mise
+  ["pinact"] = Builtins.pinact
+  ["pkl"] = Builtins.pkl
+  ["pkl-format"] = Builtins.pkl_format
+  ["rumdl"] = Builtins.rumdl
+  ["tombi"] = Builtins.tombi
+  ["typos"] = Builtins.typos
+  ["zizmor"] = Builtins.zizmor
+}
+
+exclude = "CHANGELOG.md"
+
+hooks {
+  ["commit-msg"] {
+    steps {
+      ["check-conventional-commit"] = Builtins.check_conventional_commit
+    }
+  }
+  ["pre-commit"] {
+    fix = true
+    stash = "git"
+    steps = linters
+  }
+  ["fix"] {
+    fix = true
+    steps = linters
+  }
+  ["check"] {
+    steps = linters
+  }
+}
