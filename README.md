@@ -1,3 +1,8 @@
+# This project has been archived
+
+It was started as a modern and simplier replacement for <https://github.com/tecnativa/docker-socket-proxy>,
+there is now <https://github.com/wollomatic/socket-proxy> to do the job.
+
 # Docker socket proxy
 
 Exposes a Docker HTTP endpoint that filters and proxies requests to Docker socket.
